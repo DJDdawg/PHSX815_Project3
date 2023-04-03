@@ -1,6 +1,6 @@
 # PHSX815_Project3
 
-This project discusses parameter fitting. 
+This project discusses parameter fitting. My initial thoughts/prompts for the experiment can be seen in **PHSX 815 Project 3.pdf**.
 
 **Gaussian Distribution**
 
