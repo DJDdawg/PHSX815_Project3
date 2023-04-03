@@ -18,9 +18,9 @@ $ln(P(\alpha | x, \sigma)) \approx \sum_{i=1}^{N} ln(P(x_{i} | \alpha, \sigma)) 
 
 One of the most common ways to fit a parameter to a distribution is to find the value of the parameter that will maximize the likelihood of the distribution (or the log likelihood), thus giving you the "most likely value of the parameter". For a Gaussian distribution, this can be done analytically by taking partial derivatives and setting them equal to 0.
 
-Maximizing the log likelihood w.r.t. $\alpha$ yields $\alpha = \frac{1}{N} \sum_{i=1}{N} x_{i}$, which is the mean of the distribution (as expected). 
+Maximizing the log likelihood w.r.t. $\alpha$ yields $\alpha = \frac{1}{N} \sum_{i=1}^{N} x_{i}$, which is the mean of the distribution (as expected). 
 
-Maximizing the log likelihood w.r.t. $\sigma^2$ yields $\sigma^2= \frac{1}{N} \sum_{i=1}{N} (x_{i} - \alpha)^2 $, which is the variance of the distribution (as expected).
+Maximizing the log likelihood w.r.t. $\sigma^2$ yields $\sigma^2= \frac{1}{N} \sum_{i=1}^{N} (x_{i} - \alpha)^2 $, which is the variance of the distribution (as expected).
 
 **The Code**
 
