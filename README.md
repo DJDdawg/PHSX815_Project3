@@ -25,5 +25,12 @@ The file **Gaussian.py** will output a data file with numbers that are randomly 
 
 Where '-Mean' is the mean of the distribution, '-Sigma' is the standard deviation of the distribution, '-Nmeas' is the number of measurements in an experiment, and '-Nexp' is the number of experiments.
 
+A normalized histogram of the data can be plotted with **GaussianPlot.py** by running the following:
 
+> $python3 GaussianPlot.py Data.txt
 
+The graph is shown below. 
+
+![GaussianGraph.png]()
+
+The data is analyzed using the code **GaussianAnalysis.py**.
