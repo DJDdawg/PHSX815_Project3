@@ -7,7 +7,7 @@ This project discusses parameter fitting.
 $P(x | \alpha, \sigma) = \frac{1}{\sqrt{2 \pi \sigma^2}} e^{\frac{-1}{2 \sigma ^2} (x - \alpha)^2} $
 
 
-The likelihood $P(\alpha | x, \sigma) \approx \prod_{i=1}^{N} P(x_{i} | \alpha, \sigma) $
+The likelihood is $P(\alpha | x, \sigma) \approx \prod_{i=1}^{N} P(x_{i} | \alpha, \sigma) $
 
 Taking the logarithm allows us to turn the multiplication into addition using log properties.
 
@@ -15,5 +15,15 @@ $ln(P(\alpha | x, \sigma)) \approx \sum_{i=1}^{N} ln(P(x_{i} | \alpha, \sigma)) 
 
 Maximizing the log likelihood w.r.t. $\alpha$ yields $\alpha = \frac{1}{N} \sum_{i=1}{N} x_{i}$, which is the mean of the distribution.
 
-Maximizing the log likelihood w.r.t. $\sigma^2$ yields $\sigma^2= \frac{1}{N} \sum_{i=1}{N} (x_{i} - \alpha)^2 $
- 
+Maximizing the log likelihood w.r.t. $\sigma^2$ yields $\sigma^2= \frac{1}{N} \sum_{i=1}{N} (x_{i} - \alpha)^2 $, which is the variance of the distribution.
+
+**The Code**
+
+The file **Gaussian.py** will output a data file with numbers that are randomly distributed from a Gaussian Distribution with a mean of $\mu$ and a standard deviation $\sigma$. 
+
+>$ python3 Gaussian.py -Mean 1 -Sigma 1 -Nmeas 1000 -Nexp 100 -output Data.txt
+
+Where '-Mean' is the mean of the distribution, '-Sigma' is the standard deviation of the distribution, '-Nmeas' is the number of measurements in an experiment, and '-Nexp' is the number of experiments.
+
+
+
