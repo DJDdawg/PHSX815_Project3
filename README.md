@@ -36,6 +36,6 @@ A normalized histogram of the data can be plotted with **GaussianPlot.py** by ru
 
 The graph is shown below. 
 
-![GaussianGraph.png]()
+![GaussianGraph.png](https://github.com/DJDdawg/PHSX815_Project3/blob/main/GaussianGraph.png)
 
 The data is analyzed using the code **GaussianAnalysis.py**.
