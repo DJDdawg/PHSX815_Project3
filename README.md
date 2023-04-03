@@ -38,4 +38,11 @@ The graph, **GaussianGraph.png**, is shown below.
 
 ![GaussianGraph.png](https://github.com/DJDdawg/PHSX815_Project3/blob/main/GaussianGraph.png)
 
-The data is analyzed using the code **GaussianAnalysis.py**. **not yet done**
+The data is analyzed using the code **GaussianAnalysis.py**. 
+
+The $\alpha$ parameter will be numerically fit to the data and compared with the analytical results above. 
+
+The uncertainty in the parameter decreases as the number of measurements per experiment go up, $\sigma_{alpha}^2 = \frac{\sigma^2}{N_{meas}}$
+
+
+**not yet done**
