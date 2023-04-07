@@ -40,9 +40,27 @@ The graph, **GaussianGraph.png**, is shown below.
 
 The data is analyzed using the code **GaussianAnalysis.py**. 
 
-The $\alpha$ parameter will be numerically fit to the data and compared with the analytical results above. 
+>$ python3 GaussianAnalysis.py -input0 Data.txt -Mean 1.0 -Sigma 1.0
+>
+>Number of experiments: 100
+>
+>Number of measurements/experiment: 1000
+>
+>Likelihood is maximized at x = 1.0 for the analytical solution
+>
+>Scipy minimization was successful: True
+>
+>numerical x-value found to maximize likelihood: 1.0
+>
+>maximal value: 0.3989422804014327
 
-The uncertainty in the parameter decreases as the number of measurements per experiment go up, $\sigma_{alpha}^2 = \frac{\sigma^2}{N_{meas}}$
+As predicted by the analytical solution, the x-value that maximizes the gaussian distribution is when $x = \mu$, the mean. 
 
+This also produces the graph **GaussianLikelihood.png**, seen below.
+
+![GaussianLikelihood.png](https://github.com/DJDdawg/PHSX815_Project3/blob/main/GaussianLikelihood.png)
 
 **not yet done**
+Uncertainty in the analytical and numerical parameter.
+
+Graphing how the uncertainty decreases as N increases. 
