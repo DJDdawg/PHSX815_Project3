@@ -95,7 +95,8 @@ if __name__ == "__main__":
     x_num = result.x
     print(f'numerical x-value found to maximize likelihood: {x_num}')
     
-    print(f'maximal value: {np.exp(f(x_num))}')
+    num_result = np.exp(-1 * f(x_num))
+    print(f'maximal value: {num_result}')
     
     
     #plotting likelyhood
@@ -107,7 +108,7 @@ if __name__ == "__main__":
         
     plt.plot(x,y, label = 'numerical evaluations')
     plt.plot(x_max, y_max, color = 'red', marker = 'o', label = 'analytical maximum')
-    plt.plot(x_num, np.exp(-1 * f(x_num)), color = 'green', marker = 'v', label = 'numerical maximum')
+    plt.plot(x_num, num_result, color = 'green', marker = 'v', label = 'numerical maximum')
     
     plt.xlabel('Gaussian parameter')
     plt.ylabel('Likelihood')
