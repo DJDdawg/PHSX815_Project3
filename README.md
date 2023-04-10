@@ -64,4 +64,6 @@ This graph shows the true value of the mean with the vertical red bar, and the e
 
 The values of the means calculated each experiment are graphed and plotted in **GaussianMeans.py** 
 
-![GaussianMeans.png]()
+![GaussianMeans.png](https://github.com/DJDdawg/PHSX815_Project3/blob/main/GaussianMeans.png)
+
+The x-axis was different calculated values of the mean and the y-axis is how many times that value was obtained in the experiments ran. The expected peak is around 1.0. 
