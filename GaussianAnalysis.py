@@ -47,77 +47,145 @@ if __name__ == "__main__":
         Sigma = ptemp
            
     #Analyze Data
-    data_0 = [] # will turn 2D array into 1D array
+    data_0 = [] # array of lists. Each list is an experiment.
     
     #Count Nmeas and Nexp
     with open(InputFile0) as ifile:
         for line in ifile: #Each line is a new experiment. 
-            lineVals = line.split() #All measurements in one line (experiment) 
-            Nmeas = len(lineVals) #Each experiment has Nmeas measurements (constant).       
+            lineVals = line.split() #All measurements in one experiment
+            Nmeas = len(lineVals) #Each experiment has Nmeas measurements and is constant.       
+            
+            data_exp = [] #gets reset each time. 
             
             for v in lineVals: #all measurements in a single experiment
                val = float(v) #turns string into float
-               data_0.append(val) #each measurement gets fed into a 1D array.
-
+               data_exp.append(val) #each measurement gets fed into a temporary 1D array.
+               
+            data_0.append(data_exp) #feed in list of a single experiment into this list.
+            
             Nexp += 1
 
     #Print out results to see if correct
-    #print(data_0) 
+    #print(data_0[0]) #First experiment
+     
     print(f"Number of experiments: {Nexp}")
     print(f"Number of measurements/experiment: {Nmeas}")
     
-    #Calculate Log Likelihood for one measurement
-    def Gaussloglikelihood(measurement, Mean, Sigma):
-        GLL =  -1/2 * np.log(2 * np.pi) - 1/2 * np.log(Sigma**2) - 1/(2*Sigma**2) * (measurement - Mean)**2
-        return GLL
+    #log likelihood for a single experiment 
+    current_exp = 0 #experiment 1
     
-    #make sure function works
-    #print(f"likelihood of x = 0.3: {np.exp(Gaussloglikelihood(0.3, 1.0, 1.0))}")
-    
-    #analytical solution for maximum likelihood
-    x_max = Mean
-    y_max = np.exp(Gaussloglikelihood(x_max, Mean, Sigma))
-    
-    #error on analytical solution
-    
-    
-    print(f"Likelihood is maximized at x = {x_max} for the analytical solution")
-    
-    
-    #numerical maximization using Scipy
     def f(x):
-        f = -1/2 * np.log(2 * np.pi) - 1/2 * np.log(Sigma**2) - 1/(2*Sigma**2) * (x - Mean)**2
-        return -1 * f
+        f = 0 #initialize value
+        
+        for d in data_0[current_exp]: #measurements in a single experiment
+            f += -1/2 * np.log(2 * np.pi) - 1/2 * np.log(Sigma**2) - 1/(2*Sigma**2) * (d - x)**2
+        
+        return -1 * f #need to return the negative in order to use minimization package.
     
-    result = optimize.minimize_scalar(f) #maximize
-    print(f'Scipy minimization was successful: {result.success}') # check if solver was successful
+    #analytical solution for maximum log likelihood
+    x_max = Mean
+    y_max = 0
+    
+    print(f"Log likelihood is maximized at x = {x_max} for the analytical solution")
+    
+    #numerical solution for single experiment (experiment 1)
+    result = optimize.minimize_scalar(f)
+    
+    #print(f'Scipy minimization was successful: {result.success}') # check if solver was successful
 
-    x_num = result.x
-    print(f'numerical x-value found to maximize likelihood: {x_num}')
+    x_num = result.x #the numerical solution for the mean for a single experiment
+    #print(f'numerical x-value found to maximize log likelihood for experiment 1: {x_num}')
     
-    num_result = np.exp(-1 * f(x_num))
-    print(f'maximal value: {num_result}')
+    num_result = -1 * f(x_num) #normalization factor for graph below
     
-    
-    #plotting likelyhood
-    x = np.linspace(-2, 4, 10000)
+    #Log Likelihood curve
+    x = np.linspace(0.5, 1.5, 100)
     y= []
     
+    #true value
+    x2 = []
+    y2 = np.linspace(0, 3, 100)
+    
+    #Initializtion for error analysis
+    yerrlo = 0.5
+    yerrhi = 0.5
+    xerrlo = 0.
+    xerrhi = 0.
+    
     for i in range(len(x)):
-        y.append(np.exp(Gaussloglikelihood(x[i], Mean, Sigma)))
+        y.append(f(x[i]) + num_result)
         
-    plt.plot(x,y, label = 'numerical evaluations')
-    plt.plot(x_max, y_max, color = 'red', marker = 'o', label = 'analytical maximum')
-    plt.plot(x_num, num_result, color = 'green', marker = 'v', label = 'numerical maximum')
+        x2.append(x_max) #need an array of all the same values to plot a vertical line on the graph.
+        
+        #find lower bound for 1 sigma error bar
+        if x[i] < x_num:
+            if np.abs(y[i] - 1./2.) < yerrlo:
+                yerrlo = np.abs(y[i] - 1./2.)
+                xerrlo = x[i]
+        
+        #find upper bound for 1 sigma error bar
+        if x[i] > x_num:
+            if np.abs(y[i] - 1./2.) < yerrhi:
+                yerrhi = np.abs(y[i] - 1./2.)
+                xerrhi = x[i]  
+
+    #Numerical error bars on x for a single experiment 
+    sig_num = (xerrhi - xerrlo)/2 
     
-    plt.xlabel('Gaussian parameter')
-    plt.ylabel('Likelihood')
+    #print(f'Uncertainty of numerical solution for experiment 1: {sig_num}')
+    print(f'Numerical Mean value for experiment 1: {x_num} ± {sig_num}')
+    print(f'68% CI of numerical solution for experiment 1: [{xerrlo}, {xerrhi}]')
     
-    plt.title('Likelihood for various values of the parameter')
+    #plot of Log Likelihood for a single experiment 
+    plt.plot(x, y, label = 'Numerical Evaluations')
+    plt.plot(x2, y2, color = 'red', label = 'True Value')
+    plt.errorbar(x_num, 0, xerr = sig_num, color = 'green', marker = 'v', label = '68% CI for Numerical Value')
+    
+    plt.xlabel('Mean Parameter')
+    plt.ylabel('Normalized Log Likelihood')
+    plt.title('Log Likelihood for Values of the Mean Parameter')
     
     plt.grid()
-    plt.legend(loc = 'lower center')
+    plt.legend(loc = 'upper right')
     plt.show()
+    
+    #calculate mean parameter and standard deviation of all experiments
+    result_list = [] #list of all means 
+    
+    Mean_exp = 0
+    Mean_exp_squared = 0
+    
+    for exp in range(0, Nexp):
+        current_exp = exp
+        result = optimize.minimize_scalar(f) #result for each experiment
+        result_list.append(result.x)
+        
+        Mean_exp += result.x
+        Mean_exp_squared += result.x * result.x
+      
+    Mean_exp = Mean_exp/Nexp
+    Mean_exp_squared = Mean_exp_squared/Nexp
+      
+    Sigma_exp = np.sqrt(Mean_exp_squared - Mean_exp**2)
+      
+    print(f'Numerical Mean value of all experiments: {Mean_exp} ± {Sigma_exp}')
+    
+    #Histogram of all means
+    data = np.asarray(result_list)
+    n, bins, patches = plt.hist(data, 16, edgecolor = 'black', linewidth = 3, density = False, facecolor = 'orange', alpha=0.75)
+    
+    #plot Mean_exp and Sigma_Exp on histogram
+    
+    plt.xlabel('$\mu$', fontsize = 15)
+    plt.ylabel('Number of Experiments', fontsize = 15)
+    plt.title('Measured Means from Experiments', fontsize = 20)
+    
+    plt.grid(True)
+    plt.show()   
+    
+    #Graph of how Sigma_exp changes as Nmeas increases
+    
+    
     
     
     
